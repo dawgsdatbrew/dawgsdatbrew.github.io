@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>DawgsDatBrew</title>
+        <meta name="description" content="A Online Tool Analysing Batch Brews">
+        <link rel="stylesheet" href="index.css">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+    </head>
+    
+    <body>
+        
+        <!-- page 1 -->
+        
+        <div id="pageone">
+        <h1>Batch Brew Analyser</h1>
+        
+        <div><table class="inputtable">
+        <tr class="variabletitle"><td>Dose (g)</td></tr>
+        <tr>
+            <td class="variableinput">
+                <input style="font-style: italic; color: dimgray"
+                       type="number"
+                       id="dose"
+                       value="121" />
+                       
+            </td>
+        </tr>
+        </table></div>    
+        
+            
+        <div><table class="inputtable">
+        <tr class="variabletitle"><td>Carafe Mass (g)</td></tr>
+        <tr>
+            <td class="variableinput">
+                <input style="font-style: italic; color: dimgray"
+                       type="number"
+                       id="carafemass"
+                       value="1161" />
+            </td>
+        </tr>
+        </table></div>    
+        
+        <div><table class="inputtable">
+        <tr class="variabletitle"><td>Total Coffee/Carafe Mass (g)</td></tr>
+        <tr>
+            <td class="variableinput">
+                <input style="font-style: italic; color: dimgray"
+                       type="number"
+                       id="totaloutputmass"
+                       value="3000" />
+            </td>        
+        </tr>
+        </table></div>   
+        
+
+        <div><table class="inputtable">
+        <tr class="variabletitle"><td>TDS Reading</td></tr>
+        <tr>
+            <td class="variableinput">
+                <input style="font-style: italic; color: dimgray"
+                       type="number"
+                       id="tds"
+                       value="1.4" />
+            </td>         
+        </tr>
+        </table></div>    
+    
+            
+      <a href="#pagetwo">
+                <input type="button"
+                       id="calculate"
+                       onclick="coffeemaths();"
+                       value="Extract :)" />
+        </a>
+           
+    </div>
+        
+    
+    <!-- page 2 -->
+        
+    <div id="pagetwo">
+    
+        <div id="answer">
+            <table id="answertable">
+            <tr>
+            <td id="basicanswervalue" class="answervalue">0.00%</td>
+            </tr>
+            <tr>
+            <td id="fancyanswervalue" class ="answervalue">0.00%</td>
+            </tr>
+            <tr>
+            <td id="retentiondescriber">*Attempts To Account For Water Retention</td>
+            </tr>
+            </table>
+        </div>
+        
+        
+    
+                <canvas id="graph"></canvas> 
+
+        
+
+        </div>
+        
+    
+        
+        
+        
+    <script>
+        
+        function coffeemaths() {
+            
+            var dosefunc= Number(dose.value);
+            var carafemassfunc = Number(carafemass.value);
+            var totaloutputmassfunc = Number(totaloutputmass.value);
+            var tdsfunc = Number(tds.value);
+            
+            var bevmass = totaloutputmassfunc-carafemassfunc;
+            var watervol = 2060;
+            
+            var extractionbasic = (bevmass*tdsfunc)/dosefunc;
+            
+            
+            var LRR = (watervol-((1-(tdsfunc/100))*bevmass))/dosefunc;   
+            var extractionfancy = ((watervol/dosefunc)-LRR)*tdsfunc; 
+    
+        document.getElementById("basicanswervalue").innerHTML = extractionbasic.toFixed(2) + "%";
+        
+        document.getElementById("fancyanswervalue").innerHTML = extractionfancy.toFixed(2) + "%";
+            
+            
+            
+        }
+        
+        
+        let canvas = document.getElementById('graph'),
+            ctx = canvas.getContext('2d'),
+            dpi = window.devicePixelRatio;
+        function fix_dpi() {
+        //create a style object that returns width and height
+          let style = {
+            height() {
+              return +getComputedStyle(canvas).getPropertyValue('height').slice(0,-2);
+            },
+            width() {
+              return +getComputedStyle(canvas).getPropertyValue('width').slice(0,-2);
+            }
+          }
+        //set the correct attributes for a crystal clear image!
+          canvas.setAttribute('width', style.width() * dpi);
+          canvas.setAttribute('height', style.height() * dpi);
+        }
+
+
+
+        function draw() {
+          //call the dpi fix every time 
+          //canvas is redrawn
+          fix_dpi();
+
+
+            var dosefunc= Number(dose.value);             
+            var carafemassfunc = Number(carafemass.value);
+            var totaloutputmassfunc = Number(totaloutputmass.value);
+            var tdsfunc = Number(tds.value);
+
+            var bevmass = totaloutputmassfunc-carafemassfunc;
+            var watervol = 2060;
+
+            var extractionbasic = (bevmass*tdsfunc)/dosefunc;
+
+            var LRR = (watervol-((1-(tdsfunc/100))*bevmass))/dosefunc;   
+            var extractionfancy = ((watervol/dosefunc)-LRR)*tdsfunc;
+
+
+          //draw stuff!
+
+                if (extractionbasic > 24 || extractionbasic < 16
+                    || tdsfunc > 1.44 || tdsfunc < 1.36){
+                    
+                    ctx.fillStyle = "dimgray";
+                    ctx.font = "1.2em Ubuntu";
+                    ctx.textAlign = "center";
+                    ctx.fillText("That Is Sort Of An Oaky Afterbirth", graph.width*0.5, graph.height*0.5);
+                    ctx.textAlign = "center";
+                    ctx.fillStyle = "lightblue";
+                    ctx.fillText("- Michael Scott", graph.width*0.5, graph.height*0.6);
+
+                } else{
+
+                ctx.globalAlpha = 0.4;
+                ctx.fillStyle = "lightblue";
+                ctx.fillRect(graph.width*0.3, graph.height*0.28, graph.width*0.4, graph.height*0.4);
+                ctx.globalAlpha = 1;
+
+                ctx.beginPath() 
+                ctx.arc((graph.width*((extractionbasic-16)/8)*0.8)+(graph.width*0.1), 
+                graph.height*(1-((((tdsfunc-1.36)/0.08)*0.8)+0.11)), 
+                6, 0, 2 * Math.PI, false) // full circle
+                
+                ctx.fillStyle = "dimgray";
+                ctx.fill();
+                ctx.strokeStyle = "dimgray";
+                ctx.stroke();
+                    
+                
+                ctx.beginPath()         
+                ctx.arc((graph.width*((extractionfancy-16)/8)*0.8)+(graph.width*0.1), 
+                graph.height*(1-((((tdsfunc-1.36)/0.08)*0.8)+0.11)), 
+                3, 0, 2 * Math.PI, false)
+                
+                ctx.fillStyle = "lightblue";
+                ctx.fill();
+                ctx.strokeStyle = "lightblue";
+                ctx.stroke();
+
+
+                ctx.stroke();
+                ctx.font = "1.2em Ubuntu";
+                ctx.textAlign = "center";
+                ctx.fillStyle = "dimgray";
+
+                ctx.fillText("16", graph.width*0.1, graph.height*0.975);
+                ctx.fillText("17", graph.width*0.2, graph.height*0.975);
+                ctx.fillText("18", graph.width*0.3, graph.height*0.975);
+                ctx.fillText("19", graph.width*0.4, graph.height*0.975);
+                ctx.fillText("20", graph.width*0.5, graph.height*0.975);
+                ctx.fillText("21", graph.width*0.6, graph.height*0.975);
+                ctx.fillText("22", graph.width*0.7, graph.height*0.975);
+                ctx.fillText("23", graph.width*0.8, graph.height*0.975);
+                ctx.fillText("24", graph.width*0.9, graph.height*0.975);
+
+                ctx.textAlign = "left";
+                ctx.fillText("1.36", graph.width*0.001, graph.height*0.9);
+                ctx.fillText("1.38", graph.width*0.001, graph.height*0.7);
+                ctx.fillText("1.40", graph.width*0.001, graph.height*0.5);
+                ctx.fillText("1.42", graph.width*0.001, graph.height*0.3);
+                ctx.fillText("1.44", graph.width*0.001, graph.height*0.1);
+
+                }
+
+
+
+          requestAnimationFrame(draw);
+        }
+        requestAnimationFrame(draw);
+    </script>
+        
+    
+        
+        
+        
+        
+        
+    </body>
+
+</html>

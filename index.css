@@ -1,0 +1,127 @@
+#pageone {
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+}
+
+#pagetwo {
+    width: 100%;
+    height: 100vh;
+    background-color: lightblue;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 5vh;
+    color: dimgray;
+}
+
+
+.inputtable {
+    margin: auto;
+    width: 60%;
+    margin-top: 5vh;
+    font-size: 1em;   
+}
+
+
+.variabletitle{
+    text-align: left;
+    color: dimgray;
+}
+
+body{
+    font-family: Ubuntu;
+}
+
+.variableinput {
+    border: 2px solid lightblue;
+    text-align: right;
+    width: 100%;
+}
+
+#tds, #totaloutputmass, #carafemass, #dose{
+    text-align: right;
+    width: 100%;
+    border: none;
+}
+
+
+#calculate{
+    width: 40vw;
+    margin-top: 15vh;
+    margin-left: 30vw;
+    text-align: center;
+    background-color: lightblue;
+    font-family: Ubuntu;
+    color: white;
+    border: none;
+    height: 7vh;
+    font-size: 1.2em;
+}
+
+#calculate:hover{
+    border-bottom: 5px solid dimgray;
+}
+
+#pagetwo{
+    vertical-align: middle;    
+}
+
+#answer{
+    width: 70vw;
+    height: 35vh;
+    background-color: white;
+    border: 5px solid dimgray;
+    position: absolute;
+    margin-left: 15%;
+    margin-top: 12vh;
+}
+
+#answertable{
+    margin: auto;
+    height: 60%;
+    margin-top: 5vh;
+}
+
+.answervalue{
+    text-align: center;
+}
+
+#basicanswervalue{
+    vertical-align: top;
+    font-size: 2.5em;
+    color: dimgray;
+    height: 30%
+}
+
+#fancyanswervalue{
+    vertical-align: bottom;
+    font-size: 1.2em;
+    color: lightblue;
+    height: 20%
+}
+
+
+#retentiondescriber{
+    font-size: 0.7em;
+    height: 10%;
+    color: lightblue;
+}
+
+
+#graph {
+    
+    width: 70vw;
+    height: 35vh;
+    margin-top: 55vh;
+    border: 5px solid dimgray;
+    margin-left: 15vw;
+    background-color: white;
+    position: absolute;   
+}
+
